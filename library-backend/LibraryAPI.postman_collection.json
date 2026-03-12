@@ -1,0 +1,160 @@
+{
+  "info": {
+    "name": "Library Management System API",
+    "description": "Complete Postman collection for the University Library Management System REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "BOOK_ID",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{BASE_URL}}/",
+        "description": "Check if the API is running"
+      }
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Add a New Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/api/books",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Clean Code\",\n  \"author\": \"Robert C. Martin\",\n  \"isbn\": \"978-0132350884\",\n  \"genre\": \"Software Engineering\",\n  \"publisher\": \"Prentice Hall\",\n  \"publicationYear\": 2008,\n  \"totalCopies\": 3,\n  \"shelfLocation\": \"B2-S1\",\n  \"bookType\": \"Circulating\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Add a new book to the library"
+          }
+        },
+        {
+          "name": "Add Reference Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/api/books",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Introduction to Algorithms\",\n  \"author\": \"Thomas H. Cormen\",\n  \"isbn\": \"978-0262033848\",\n  \"genre\": \"Computer Science\",\n  \"publisher\": \"MIT Press\",\n  \"publicationYear\": 2009,\n  \"totalCopies\": 2,\n  \"shelfLocation\": \"A1-S3\",\n  \"bookType\": \"Reference\",\n  \"status\": \"Available\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get All Books",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/api/books",
+            "description": "Retrieve all books with default pagination"
+          }
+        },
+        {
+          "name": "Get All Books (Filtered + Paginated)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/api/books?page=1&limit=5&genre=Computer Science&bookType=Circulating&order=asc",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "5" },
+                { "key": "genre", "value": "Computer Science" },
+                { "key": "bookType", "value": "Circulating" },
+                { "key": "order", "value": "asc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Book by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/api/books/{{BOOK_ID}}",
+            "description": "Get a single book by its MongoDB ObjectId"
+          }
+        },
+        {
+          "name": "Update a Book",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/api/books/{{BOOK_ID}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"totalCopies\": 5,\n  \"availableCopies\": 4,\n  \"shelfLocation\": \"C3-S2\",\n  \"status\": \"Available\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Update specific fields of a book"
+          }
+        },
+        {
+          "name": "Delete a Book",
+          "request": {
+            "method": "DELETE",
+            "url": "{{BASE_URL}}/api/books/{{BOOK_ID}}",
+            "description": "Delete a book by ID"
+          }
+        },
+        {
+          "name": "Search Books by Title",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/api/books/search?title=clean",
+              "query": [
+                { "key": "title", "value": "clean" }
+              ]
+            },
+            "description": "Search books by title (case-insensitive)"
+          }
+        },
+        {
+          "name": "Search Books by Author",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/api/books/search?author=martin",
+              "query": [
+                { "key": "author", "value": "martin" }
+              ]
+            },
+            "description": "Search books by author name (case-insensitive)"
+          }
+        },
+        {
+          "name": "Search Books by Title AND Author",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/api/books/search?title=code&author=martin",
+              "query": [
+                { "key": "title", "value": "code" },
+                { "key": "author", "value": "martin" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
